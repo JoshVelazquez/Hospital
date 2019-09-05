@@ -1,0 +1,13 @@
+body {
+    margin: 10px;
+    background: url("../img/crisp_paper_ruffles.png");
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#titulo {
+    width: 100%;
+    background-color: #2C77E8;
+    text-align: center;
+    color: white;
+    margin: 0%;
+}
