@@ -1,37 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+  include_once "Plantillas/Declaracion.inc.php";
+  include_once "Plantillas/Navbar.inc.php";
+  include_once "app/Conexion.inc.php";
+  include_once "app/ValidadorRegistro.inc.php";
+  include_once "app/Redireccion.inc.php";
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" type="text/css" href="css/estilos.css" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-  <title>Proyecto Clinica</title>
-</head>
-
-<body>
-  <nav class="navbar sticky-top navbar-dark bg-info navbar-expand-md shadow">
-    <a class="navbar-brand" href="index.php">
-      <img src="img/hospital-clinic-plus-logo-7916383C7A-seeklogo.com.png" alt="" width="30" height="30"
-        class="d-inline-block align-top" />
-      Clínica</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="#">Medicos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Usuarios</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Cirugías</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Consultas</a></li>
-      </ul>
-    </div>
-  </nav>
-  <br />
+  if (isset($_POST['enviar'])) {
+    Conexion :: abrirConexion(); 
+    $validador = new validadorRegistro($_POST['Nombre'],$_POST['Apellido'],$_POST['Email'],$_POST['Password'], Conexion::getConexion());
+    if($validador -> registroValido())
+    {
+      $usuario = new Usuarios('', $validador -> getNombre(), $validador -> getApellido(), $validador -> getEmail(), password_hash($validador -> getPassword(), PASSWORD_DEFAULT));
+      $usuarioInsertado = RepositorioUsuarios :: insertarUsuario(Conexion :: getConexion(), $usuario);
+      if ($usuarioInsertado) {
+        Redireccion::redirigir("RegistroCorrecto.php" ."?nombre=" . $usuario ->getNombre());
+      }
+    }
+    Conexion :: cerrarConexion();
+  }
+  
+?>
   <div class="container">
-    <div class="jumbotron jumbotron-fluid text-center bg-light border-info">
+    <div class="jumbotron jumbotron-fluid text-center bg-info rounded">
       <div class="container">
         <h2 class="display-4">Clínica Velázquez</h2>
         <p class="lead">Lo principal es su salud</p>
@@ -64,56 +54,48 @@
     </div>
     <br />
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-6">
+        <div class="card border-info mb-3">
+          <div class="card-header">
+            <h2>Intrucciones</h2>
+          </div>
+          <div class="card-body">
+            <p class="text-justify">
+              Para unirte al blog introduce tu nombre, apellido, tu correo el cual debe de ser real ya que lo
+              necesitaras para gestionar tu cuenta
+              y contraseña, se recomienda que la contraseña tenga letras, numeros y caracteres especiales.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
         <div class="card border-info mb-3">
           <div class="card-header">
             <h2>Formulario de registro</h2>
           </div>
           <div class="card-body">
-            <form action="">
-              <div class="form-group">
-                <label for="text">Nombre</label>
-                <input type="text" name="Nombre" id="Nombre" class="form-control" placeholder="Ej. Juan" />
-              </div>
-              <div class="form-group">
-                <label for="Apellido">Apellido</label>
-                <input type="text" name="Apellido" id="Apellido" placeholder="Ej. Perez" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label for="Edad">Edad</label>
-                <input type="number" name="Edad" id="Edad" placeholder="Ej. 25" class="form-control" min="1" max="99" />
-              </div>
-              <label for="">Sexo</label>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input type="radio" name="Sexo" value="Masculino" class="form-check-input" />M
-                </label>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input type="radio" name="Sexo" value="Femenino" class="form-check-input" />F
-                </label>
-              </div>
-              <div class="form-group">
-                <label for="Email">Email</label>
-                <input type="email" name="Email" id="Email" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="Telefono">Telefono</label>
-                <input type="tel" name="Telefono" id="Telefono" class="form-control" pattern="[0-9]{10}">
-              </div>
-              <div class="form-group">
-                  <label for="Password">Password</label>
-                  <input type="password" name="Password" id="Password" class="form-control">
-                </div>
-              <button type="reset" class="btn btn-dark">limpiar</button>
-              <button type="submit" class="btn btn-dark">Enviar</button>
+            <form action="<?php
+					echo($_SERVER['PHP_SELF'])
+					?>" method="post">
+              <?php
+              if (isset($_POST['enviar'])) {
+                include_once 'plantillas/RegistroValido.inc.php';
+              } else {
+                include_once 'plantillas/RegistroVacio.inc.php';
+              }
+              ?>
             </form>
           </div>
         </div>
       </div>
     </div>
+    <div class="row">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.60065680463!2d-103.30526843559895!3d20.645128156140846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b3b7cf9feb79%3A0x45d091a761f9f3a1!2sIMSS%20Hospital%20General%20de%20Zona%2014!5e0!3m2!1ses-419!2smx!4v1569426130731!5m2!1ses-419!2smx"
+        width="1200" height="500" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+    </div>
   </div>
+  <br>
   <!-- Footer -->
   <footer class="page-footer font-small bg-dark text-white pt-4">
     <!-- Footer Links -->
@@ -133,15 +115,6 @@
       <!-- Grid row -->
     </div>
   </footer>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-</body>
-
-</html>
+<?php
+include_once "Plantillas/Cierre.inc.php";
+?>

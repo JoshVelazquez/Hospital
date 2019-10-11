@@ -1,16 +1,16 @@
 <?php
 
-include_once "Persona.php";
+include_once "Usuarios.inc.php";
 
-class Medicos extends Persona
+class Medicos extends Usuarios
 {
     private $NumeroCedula;
     private $Especialidad;
 
-    public function __construct($Id, $Nombre, $Apellido, $Edad, $Sexo, $Correo,
-     $Telefono, $Password, $NumeroCedula, $Especialidad)
+    public function __construct($Id, $Nombre, $Apellido, $Correo,
+     $Password, $NumeroCedula, $Especialidad)
     {
-        parent::__construct($Id, $Nombre, $Apellido, $Edad, $Sexo, $Correo, $Telefono, $Password);
+        parent::__construct($Id, $Nombre, $Apellido, $Correo, $Password);
         $this -> NumeroCedula = $NumeroCedula;
         $this -> Especialidad = $Especialidad;
     }
