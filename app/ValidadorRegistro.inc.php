@@ -14,7 +14,7 @@ class ValidadorRegistro{
     private $AvisoInicio;
     Private $AvisoCierre;
 
-    public function __construct($Nombre, $Apellido, $Email, $Password,$Conexion)
+    public function __construct($Nombre, $Apellido, $Email, $Password, $Conexion)
     {
 		$this -> Nombre = "";
 		$this -> Apellido = "";
@@ -40,7 +40,7 @@ class ValidadorRegistro{
     private function valNombre($nombre)
 	{
 		if (!$this -> variableIniciada($nombre)) {
-			return "Debes escribir un nombre usuario";
+			return "Debes escribir un nombre de usuario";
 		}
 		else{
 			$this -> Nombre = $nombre;
@@ -76,11 +76,15 @@ class ValidadorRegistro{
 		}
 		return "";
     }
-    private function valPassword($clave)
+    private function valPassword($password)
 	{
-		if (!$this -> variableIniciada($clave)) {
+		if (!$this -> variableIniciada($password)) {
 			return "Debes escribir una contraseña";
 		}
+		else{
+			$this -> Password = $password;
+		}
+		return "";
     }
     public function mostrarNombre()
 	{
@@ -154,6 +158,6 @@ class ValidadorRegistro{
 	}
 	public function getPassword()
 	{
-		return $this -> Nombre;
+		return $this -> Password;
 	}
 }

@@ -2,6 +2,29 @@
 include_once 'app/Conexion.inc.php';
 include_once 'app/RepositorioUsuarios.inc.php';
 include_once 'app/Redireccion.inc.php';
+include_once 'app/ValidadorLogin.inc.php';
+include_once 'app/ControlSesion.inc.php';
+
+if(ControlSesion::sesionIniciada())
+{
+    Redireccion::redirigir(SERVIDOR);
+}
+if (isset($_POST['login'])) {
+  Conexion::abrirConexion();
+  
+  $validador = new ValidadorLogin($_POST['email'], $_POST['password'], Conexion::getConexion());
+  
+  if ($validador -> obtenerError() === '' &&
+          !is_null($validador -> obtenerUsuario())) {
+      ControlSesion::iniciarSesion(
+              $validador -> obtenerUsuario() -> getId(),
+              $validador -> obtenerUsuario() -> getNombre());
+      Redireccion::redirigir(SERVIDOR);
+  }
+  
+  Conexion::cerrarConexion();
+}
+$titulo = "Login";
 include_once 'plantillas/Declaracion.inc.php';
 include_once 'plantillas/Navbar.inc.php';
 ?>
@@ -25,17 +48,25 @@ include_once 'plantillas/Navbar.inc.php';
             <h2>Datos</h2>
           </div>
           <div class="card-body">
-            <form action="Login.php">
+            <form action="<?php echo LINK_LOGIN; ?>" method="post">
                 <div class="form-group">
-                    <label for="text">Nombre</label>
-                    <input type="text" name="nombre" class="form-control">
+                    <label for="text">Email</label>
+                    <input type="email" name="email" placeholder="Ej. JuanPerez@gmail.com" class="form-control" <?php
+                        if (isset($_POST['login']) && isset($_POST['email']) && !empty($_POST['email'])) {
+                            echo 'value="' . $_POST["email"] . '"';
+                        } ?>>
                 </div>
                 <div class="form-group">
-                    <label for="text">Nombre</label>
-                    <input type="password" name="password" class="form-control">
+                    <label for="text">Contraseña</label>
+                    <input type="password" name="password" placeholder="******" class="form-control">
                 </div>
+                <?php
+                  if (isset($_POST['login'])) {
+                    $validador -> mostrarError();
+                  }
+                ?>
                 <button type="reset" class="btn btn-dark" name="limpiar">limpiar</button>
-                <button type="submit" class="btn btn-dark" name="enviar">Enviar</button>
+                <button type="submit" class="btn btn-dark" name="login">Enviar</button>
             </form>
           </div>
         </div>

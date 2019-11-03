@@ -9,6 +9,7 @@ else {
     ob_start();
     Redireccion::redirigir("localhost/proyecto/index.php");
 }
+$titulo = "Registro Correcto!";
 include_once 'plantillas/Declaracion.inc.php';
 include_once 'plantillas/Navbar.inc.php';
 ?>
@@ -21,6 +22,7 @@ include_once 'plantillas/Navbar.inc.php';
                 </div>
                 <div class="card-body">
                     <h2>Gracias por registrarte <b><?php echo $nombre?></b>!</h2><br>
+                    <a href="<?php echo LINK_LOGIN; ?>">Ir al login</a>
                 </div>
             </div>
         </div>

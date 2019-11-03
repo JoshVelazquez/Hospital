@@ -84,5 +84,31 @@ class RepositorioUsuarios
 			return $existe;
 		}
     }
-    
+    public static function obtenerUsuarioEmail($conexion, $email)
+	{
+		$usuario = null;
+
+		if (isset($conexion)) {
+			try {
+				include_once "Usuarios.inc.php";
+
+				$sql = "SELECT * FROM " .NOMBRE_DB. ".usuarios WHERE Email = :email";
+
+				$sentencia = $conexion -> prepare($sql);
+				$sentencia -> bindParam(":email", $email, PDO::PARAM_STR);
+				$sentencia -> execute();
+				$resultado = $sentencia -> fetch();
+				if (!empty($resultado)) {
+					$usuario = new Usuarios($resultado['Id'],
+						$resultado['Nombre'],
+						$resultado['Apellido'],
+						$resultado['Email'],
+						$resultado['Password']);
+				}
+			} catch (PDOException $ex) {
+				print "Error" . $ex -> getMessage();
+			}
+		}
+		return $usuario;
+	}
 }

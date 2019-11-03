@@ -1,4 +1,5 @@
 <?php
+  ob_start();
   include_once "Plantillas/Declaracion.inc.php";
   include_once "Plantillas/Navbar.inc.php";
   include_once "app/Conexion.inc.php";
@@ -11,6 +12,7 @@
     if($validador -> registroValido())
     {
       $usuario = new Usuarios('', $validador -> getNombre(), $validador -> getApellido(), $validador -> getEmail(), password_hash($validador -> getPassword(), PASSWORD_DEFAULT));
+      //
       $usuarioInsertado = RepositorioUsuarios :: insertarUsuario(Conexion :: getConexion(), $usuario);
       if ($usuarioInsertado) {
         Redireccion::redirigir("RegistroCorrecto.php" ."?nombre=" . $usuario ->getNombre());
@@ -53,6 +55,7 @@
       </div>
     </div>
     <br />
+    <!-- -->
     <div class="row">
       <div class="col-md-6">
         <div class="card border-info mb-3">
@@ -89,6 +92,7 @@
         </div>
       </div>
     </div>
+    <!-- -->
     <div class="row">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.60065680463!2d-103.30526843559895!3d20.645128156140846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b3b7cf9feb79%3A0x45d091a761f9f3a1!2sIMSS%20Hospital%20General%20de%20Zona%2014!5e0!3m2!1ses-419!2smx!4v1569426130731!5m2!1ses-419!2smx"
