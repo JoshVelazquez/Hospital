@@ -14,8 +14,6 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
       <ul class="navbar-nav navbar-left">
         <li class="nav-item"><a class="nav-link" href="Medicos.php">Medicos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Cirugías</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Consultas</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <?php
@@ -26,8 +24,7 @@
           <?php echo ' ' . $_SESSION['nombreUsuario']; ?>
         </a>
         <div class="dropdown-menu border-info" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Agendar Cita</a>
-          <a class="dropdown-item" href="#">Citas Pasadas</a>
+          <a class="dropdown-item" href="Citas.php">Citas</a>
           <a class="dropdown-item" href="<?php echo LINK_LOGOUT; ?>">Cerrar Sesion</a>
         </div>
       </li>

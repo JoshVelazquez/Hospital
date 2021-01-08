@@ -15,6 +15,6 @@
         <label for="Password">Password</label>
         <input type="password" name="Password" id="Password" class="form-control" placeholder="*******">
     </div>
-    <button type="reset" class="btn btn-dark" name="limpiar">limpiar</button>
+    <button type="reset" class="btn btn-dark" name="limpiar">Limpiar</button>
     <button type="submit" class="btn btn-dark" name="enviar">Enviar</button>
 </form>

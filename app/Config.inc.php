@@ -9,3 +9,4 @@ define("SERVIDOR","http://localhost/proyecto");
 define("LINK_REGISTRO_CORRECTO",SERVIDOR."/RegistroCorrecto.php");
 define("LINK_LOGIN",SERVIDOR."/Login.php");
 define("LINK_LOGOUT",SERVIDOR."/Logout.php");
+define("LINK_MEDICOS",SERVIDOR."/Medicos.php");

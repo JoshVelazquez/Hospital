@@ -2,6 +2,7 @@
 
 class ValidadorMedicos
 {
+	private $Id;
     private $Nombre;
     private $Apellido;
     private $Email;
@@ -18,8 +19,9 @@ class ValidadorMedicos
     private $AvisoInicio;
     Private $AvisoCierre;
 
-    public function __construct($Nombre, $Apellido, $Email, $Cedula, $Especialidad, $Cirujano, $Conexion)
+    public function __construct($Id, $Nombre, $Apellido, $Email, $Cedula, $Especialidad, $Cirujano, $Conexion)
     {
+		$this -> Id = $Id;
         $this -> Nombre = "";
 		$this -> Apellido = "";
         $this -> Email = "";
@@ -27,9 +29,9 @@ class ValidadorMedicos
         $this -> Especialidad = "";
         $this -> Cirujano = $Cirujano;
         $this -> ErrorNombre = $this -> valNombre($Nombre);
-        $this -> ErrorEmail = $this -> valEmail($Conexion, $Email);
+        $this -> ErrorEmail = $this -> valEmail($Conexion, $Email, $Id);
         $this -> ErrorApellido = $this -> valApellido($Apellido);
-        $this -> ErrorCedula = $this -> valCedula($Conexion, $Cedula);
+        $this -> ErrorCedula = $this -> valCedula($Conexion, $Cedula, $Id);
         $this -> ErrorEspecialidad = $this -> valEspecialidad($Especialidad);
         $this -> AvisoInicio = "<br><div class='alert alert-danger'>";
 		$this -> AvisoCierre = "</div>";
@@ -69,7 +71,7 @@ class ValidadorMedicos
 		}
 		return "";
     }
-    private function valEmail($conexion, $email)
+    private function valEmail($conexion, $email ,$id)
 	{
 		if (!$this -> variableIniciada($email)) {
 			return "Debes escribir un email";
@@ -77,12 +79,19 @@ class ValidadorMedicos
 		else{
 			$this -> Email = $email;
 		}
-		if (RepositorioMedicos :: existeEmail($conexion, $email)) {
-			return "Este email ya esta en uso, por favor prueba otro email";
+		if ($id == "") {
+			if (RepositorioMedicos :: existeEmail($conexion, $email)) {
+				return "Este email ya esta en uso, por favor prueba otro email";
+			}
+		}
+		else {
+			if (RepositorioMedicos :: existeEmailModificar($conexion, $email, $id)) {
+				return "Este email ya esta en uso, por favor prueba otro email";
+			}
 		}
 		return "";
     }
-    private function valCedula($conexion, $cedula)
+    private function valCedula($conexion, $cedula, $id)
     {
         if (!$this -> variableIniciada($cedula)) {
 			return "Debes escribir una cedula valida";
@@ -92,11 +101,19 @@ class ValidadorMedicos
 		}
 		if (strlen($cedula) != 10) {
 			return "La cedula deben ser 10 caracteres exactos";
-        }
-        if(RepositorioMedicos :: existeCedula($conexion, $cedula))
-        {
-            return "Esta cedula ya esta registrada por favor pruebe otra";
-        }
+		}
+		if ($id == "") {
+			if(RepositorioMedicos :: existeCedula($conexion, $cedula))
+			{
+				return "Esta cedula ya esta registrada por favor pruebe otra";
+			}	
+		}
+		else {
+			if(RepositorioMedicos :: existeCedulaModificar($conexion, $cedula, $id))
+			{
+				return "Esta cedula ya esta registrada por favor pruebe otra";
+			}	
+		}
 		return "";
     }
     private function valEspecialidad($Especialidad)

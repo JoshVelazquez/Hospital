@@ -14,13 +14,12 @@
          } else {
             $cirujano = false;
          }
-        $validador = new validadorMedicos($_POST['Nombre'],$_POST['Apellido'],$_POST['Email'],$_POST['Cedula'],
+        $validador = new validadorMedicos("",$_POST['Nombre'],$_POST['Apellido'],$_POST['Email'],$_POST['Cedula'],
         $_POST['Especialidad'], $cirujano, Conexion::getConexion());
         if($validador -> registroValido())
         {
           $medico = new Medicos('', $validador -> getNombre(), $validador -> getApellido(), $validador -> getEmail(), 
           $validador -> getCedula(), $validador -> getEspecialidad(), $validador -> getEsCirujano());
-          //
           $medicoInsertado = RepositorioMedicos :: insertarMedico(Conexion :: getConexion(), $medico);
           if ($medicoInsertado) {
             Redireccion::redirigir("Medicos.php");
@@ -71,7 +70,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $medicos = RepositorioMedicos::obtenerTodos(Conexion::getConexion());
+                                        RepositorioMedicos::mostrarTodos(Conexion::getConexion());
                                     ?>
                                 </tbody>
                             </table>

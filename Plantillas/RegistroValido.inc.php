@@ -27,6 +27,6 @@
 	        $validador -> mostrarErrorPassword();
 	    ?>
     </div>
-    <button type="reset" class="btn btn-dark" name="limpiar">limpiar</button>
+    <button type="reset" class="btn btn-dark" name="limpiar">Limpiar</button>
     <button type="submit" class="btn btn-dark" name="enviar">Enviar</button>
 </form>
